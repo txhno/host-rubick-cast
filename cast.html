@@ -2418,16 +2418,23 @@ ollama pull qwen2.5vl:32b</code></pre></div></div>
   const search = document.getElementById('nav-search');
   const links = nav ? Array.from(nav.querySelectorAll('a')) : [];
 
-  links.forEach(link => {
+  const scrollToHash = (href, activeLink = null) => {
+    if (!href.startsWith('#') || href.length <= 1) return false;
+    const target = document.getElementById(decodeURIComponent(href.slice(1)));
+    if (!target) return false;
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (activeLink) {
+      links.forEach(a => a.classList.toggle('active', a === activeLink));
+    }
+    return true;
+  };
+
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', event => {
       const href = link.getAttribute('href') || '';
-      if (!href.startsWith('#') || href.length <= 1) return;
-      const target = document.getElementById(decodeURIComponent(href.slice(1)));
-      if (!target) return;
+      const handled = scrollToHash(href, links.includes(link) ? link : null);
+      if (!handled) return;
       event.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      history.replaceState(null, '', href);
-      links.forEach(a => a.classList.toggle('active', a === link));
     });
   });
 
