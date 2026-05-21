@@ -46,17 +46,34 @@ if not DOC_PATH.exists():
 st.markdown(
     """
     <style>
+      html,
+      body,
+      .stApp,
+      [data-testid="stAppViewContainer"],
+      [data-testid="stAppViewContainer"] > .main {
+        margin: 0;
+        padding: 0;
+        background: transparent;
+      }
       .block-container {
         max-width: none;
-        padding: 0;
+        padding: 0 !important;
       }
       header[data-testid="stHeader"],
+      div[data-testid="stDecoration"],
       div[data-testid="stToolbar"],
       footer {
-        display: none;
+        display: none !important;
+        height: 0 !important;
+      }
+      div[data-testid="stVerticalBlock"],
+      div[data-testid="stVerticalBlock"] > div {
+        gap: 0 !important;
       }
       iframe {
         display: block;
+        margin: 0;
+        padding: 0;
       }
     </style>
     """,
