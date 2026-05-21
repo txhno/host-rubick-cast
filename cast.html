@@ -805,11 +805,6 @@ mark.search-hit { background: #fff2a8; color: inherit; padding: 0 2px; border-ra
 <a class="quick-card" href="#all-checks"><strong>All checks explained</strong><span>Review every check, what it validates, and the data it uses.</span></a>
 <a class="quick-card" href="#output-webhook"><strong>Output and webhook</strong><span>Trace where pass/fail results are written or posted.</span></a>
 </section>
-<section aria-label="Reading aids" class="reading-aids">
-<div class="aid"><strong>Follow the flow arrows.</strong><p>Each diagram shows where data enters, what CAST does with it, and where the result goes next.</p></div>
-<div class="aid"><strong>Open diagrams when details are small.</strong><p>Click any diagram or screenshot, then use the zoom controls and scrollbars for close reading.</p></div>
-<div class="aid"><strong>Use table search and scroll areas.</strong><p>Large check tables stay readable and can be filtered without squeezing columns.</p></div>
-</section>
 <article class="article">
 <section class="doc-section" id="overview"><div class="section-kicker">Section</div><h2>Overview<a aria-label="Link to this section" class="heading-anchor" href="#overview">#</a></h2>
 <div class="stat-grid"><div class="stat"><span>83</span><strong>Configured checks</strong><p>Text, image, nomenclature, size, legal, spell, and marketplace-specific rules</p></div><div class="stat"><span>2</span><strong>Primary marketplaces</strong><p>Myntra and TataCliq are mapped in configuration</p></div><div class="stat"><span>3</span><strong>Vision clients</strong><p>Gemini, OpenAI-compatible APIs, and Ollama are supported</p></div><div class="stat"><span>2</span><strong>Input modes</strong><p>Order-based Mongo mode and direct payload mode</p></div></div>
@@ -2422,6 +2417,19 @@ ollama pull qwen2.5vl:32b</code></pre></div></div>
   const nav = document.getElementById('doc-nav');
   const search = document.getElementById('nav-search');
   const links = nav ? Array.from(nav.querySelectorAll('a')) : [];
+
+  links.forEach(link => {
+    link.addEventListener('click', event => {
+      const href = link.getAttribute('href') || '';
+      if (!href.startsWith('#') || href.length <= 1) return;
+      const target = document.getElementById(decodeURIComponent(href.slice(1)));
+      if (!target) return;
+      event.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', href);
+      links.forEach(a => a.classList.toggle('active', a === link));
+    });
+  });
 
   if (search && links.length) {
     search.addEventListener('input', () => {
